@@ -40,14 +40,12 @@ app.use(session({
   store: new FileStore()
 }));
 
+app.use(logger('dev'));
+app.use(express.json());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
 
 function auth(req, res, next) {
   console.log(req.session);
@@ -69,6 +67,8 @@ function auth(req, res, next) {
 
 app.use(auth);
 
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/campsites', campsiteRouter);
 app.use('/promotions', promotionRouter);
 app.use('/partners', partnerRouter);
