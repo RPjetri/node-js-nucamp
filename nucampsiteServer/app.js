@@ -31,6 +31,16 @@ connect.then(() => console.log('Connected correctly to server'),
 
 var app = express();
 
+// Secure traffic only
+app.all('*', (req, res, next) => {
+  if (req.secure) {
+    return next();
+  } else {
+      console.log(`Redirecting to: https://${req.hostname}:${app.get('secPort')}${req.url}`);
+      res.redirect(301, `https://${req.hostname}:${app.get('secPort')}${req.url}`);
+  }
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -51,7 +61,6 @@ app.use('/campsites', campsiteRouter);
 app.use('/promotions', promotionRouter);
 app.use('/partners', partnerRouter);
 
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -67,5 +76,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;
