@@ -6,6 +6,7 @@ const cors = require('./cors')
 
 var router = express.Router()
 
+
 router.get('/', cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, function (req, res, next) {
   User.find()
     .then((users) => {
@@ -14,6 +15,7 @@ router.get('/', cors.corsWithOptions, authenticate.verifyUser, authenticate.veri
       res.json(users)
     }).catch(err => next(err))
 })
+
 
 router.post('/signup', cors.corsWithOptions, (req, res) => { 
   User.register(
@@ -56,9 +58,10 @@ router.post('/login', cors.corsWithOptions, passport.authenticate('local'), (req
   res.json({ success: true, token: token, status: 'You are successfully logged in!' })
 })
 
-router.get('/logout', cors.corsWithOptions, (req, res, next) => { 
+
+router.get('/logout', cors.corsWithOptions, (req, res, next) => { // logouts user
   if (req.session) { 
-    req.session.destroy() 
+    req.session.destroy()
     res.clearCookie('session-id') 
     res.redirect('/') 
   } else {

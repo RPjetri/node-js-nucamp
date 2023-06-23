@@ -1,3 +1,4 @@
 node_modules
-nucampsiteServer/bin/server.key
-nucampsiteServer/bin/server.cert
+bin/server.key
+bin/server.cert
+config.js
